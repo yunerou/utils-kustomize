@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: debug-pod
+spec:
+  # replicas: 1 # must ignore to avoid flux reconcile
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: debug-pod
+  template:
+    metadata:
+      labels:
+        app: debug-pod
+    spec:
+      containers:
+        - name: ubuntu
+          image: yunerou/debug-by-ubuntu:v0.1.0
+          command: ["sh", "-c", 'echo "Hello, Kubernetes!" && sleep infinity']
+          resources:
+            limits:
+              cpu: 200m
+              memory: 600Mi
+            requests:
+              cpu: 20m
+              memory: 50Mi
